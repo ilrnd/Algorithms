@@ -95,15 +95,16 @@ class BinaryTree {
     }
 
     public boolean insert(int value) {
-        if (root == null) {
-            root = new Node();
-            root.value = value;
+        if(root != null){
+            boolean result = insert(root, value);
+            root = rebalance(root);
             root.color = Color.BLACK;
-            return true;
+            return result;
         } else {
-            root = Rebalance(root);
+            root = new Node();
             root.color = Color.BLACK;
-            return insert(root, value);
+            root.value = value;
+            return true;
         }
     }
 
@@ -113,7 +114,7 @@ class BinaryTree {
         if (node.value > value) {
             if (node.left != null) {
                 boolean result = insert(node.left, value);
-                node.left = Rebalance(node.left);
+                node.left = rebalance(node.left);
                 return result;
             } else {
                 node.left = new Node();
@@ -124,7 +125,7 @@ class BinaryTree {
         } else {
             if (node.right != null) {
                 boolean result = insert(node.right, value);
-                node.right = Rebalance(node.right);
+                node.right = rebalance(node.right);
                 return result;
             } else {
                 node.right = new Node();
@@ -135,7 +136,7 @@ class BinaryTree {
         }
     }
 
-    private Node Rebalance(Node node) {
+    private Node rebalance(Node node) {
         Node result = node;
         boolean needRebalance;
         do {
